@@ -1,0 +1,15 @@
+.downloadBox {
+    text-align: center;
+}
+
+.fileName {
+    color: var(--darkBlue);
+}
+
+.downloadBtn {
+    width: 50%;
+    margin: auto;
+    padding: 10px 0;
+    font-size: 1rem;
+    font-weight: 600;
+}
