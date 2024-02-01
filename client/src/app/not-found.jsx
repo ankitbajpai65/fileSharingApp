@@ -15,7 +15,7 @@ const homeBtnStyle = {
   fontSize: '14px',
   fontWeight: '600',
   border: '1px solid var(--darkBlue)',
-  color: 'white',
+  color: 'var(--lightColor)',
   background: 'var(--darkBlue)',
   borderRadius: '6px',
   cursor: 'pointer',

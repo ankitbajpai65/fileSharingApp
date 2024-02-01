@@ -5,12 +5,12 @@ import './Download.css';
 
 const Download = () => {
     const pathname = usePathname();
-
+    const BASE_URL = process.env.BASE_URL || 'http://localhost:5000';
     const file = pathname.split('/')[2];
 
     const handleDownloadBtn = async () => {
         try {
-            const response = await fetch(`http://localhost:5000/download/${file}`);
+            const response = await fetch(`${BASE_URL}/download/${file}`);
             console.log(response);
 
             if (response.ok) {
@@ -39,7 +39,7 @@ const Download = () => {
                     <img src="/icon.png" alt="" />
                 </div>
                 <h2>Your file is ready to download</h2>
-                <small>Link will expire in 24 hrs</small>
+                {/* <small>Link will expire in 24 hrs</small> */}
                 <p className='fileName'>{file}</p>
                 <button
                     className='downloadBtn'

@@ -4,6 +4,8 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const upload = require('./middleware/upload');
 const FileModel = require('./models/file');
+const email = require('./controllers/email')
+const bodyParser = require("body-parser");
 
 dotenv.config();
 
@@ -14,14 +16,18 @@ app.use(cors());
 const databaseURL = process.env.DATABASE;
 handleDbConnection(databaseURL);
 
+app.use(bodyParser.json());
+app.use('/sendMail', email);
+
 // ROUTES
+
 app.get('/', (req, res) => {
-    res.send("welcome to my file sharing app!")
+    res.send("Welcome to my file sharing app!")
 })
 
 app.post('/upload', upload.single('file'), async (req, res) => {
     const fileId = req.file.filename;
-    // console.log(fileId);
+    // console.log(req.file);
 
     try {
         await FileModel.create({
@@ -30,8 +36,8 @@ app.post('/upload', upload.single('file'), async (req, res) => {
             fileType: req.file.mimetype,
         });
 
-        const shareableLink = `http://localhost:3000/download/${fileId}`
-        return res.json({ link: shareableLink, msg: 'Link send successfully' })
+        const shareableLink = `${process.env.BASE_URL}/download/${fileId}`
+        return res.json({ link: shareableLink, fileSize: req.file.size, msg: 'Link send successfully' })
     } catch (err) {
         console.log(err);
         return res.json({ error: err })
@@ -44,6 +50,7 @@ app.get('/download/:id', (req, res) => {
 
     res.download(filePath);
 })
+
 
 const port = process.env.PORT || 8000;
 

@@ -1,16 +1,19 @@
 "use client";
 import { useState, useRef } from 'react';
+import { Snackbar, Alert } from '@mui/material';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import Snackbar from '@mui/material/Snackbar';
-import { Alert } from '@mui/material';
 import './Home.css';
 
 const Home = () => {
     const fileInputRef = useRef(null);
     const linkRef = useRef(null);
+    const BASE_URL = process.env.BASE_URL || 'http://localhost:5000';
     const [uploadedFile, setUploadedFile] = useState({});
-    const [fileLink, setFileLink] = useState('');
-
+    const [formInputs, setFormInputs] = useState({});
+    const [fileData, setFileData] = useState({
+        fileLink: '',
+        fileSize: ''
+    });
     const [state, setState] = useState({
         open: false,
         vertical: 'top',
@@ -26,7 +29,6 @@ const Home = () => {
     };
 
     const handleBrowseClick = async () => {
-        // console.log(fileInputRef)
         fileInputRef.current.click();
     };
 
@@ -34,8 +36,8 @@ const Home = () => {
         linkRef.current.select();
 
         try {
-            navigator.clipboard.writeText(fileLink);
-            setState((prev) => ({ ...prev, open: true }));
+            navigator.clipboard.writeText(fileData.fileLink);
+            setState((prev) => ({ ...prev, open: true, message: 'Link copied!' }));
         } catch (err) {
             console.error('Unable to copy link to clipboard');
         }
@@ -44,22 +46,48 @@ const Home = () => {
     const handleFileChange = async (event) => {
         const selectedFile = event.target.files[0];
         if (selectedFile) {
-            // console.log('Selected File:', selectedFile);
-            setUploadedFile(selectedFile)
+            setUploadedFile(selectedFile);
 
             const formData = new FormData();
             formData.append('file', selectedFile);
             // console.log(formData);
 
-            const res = await fetch('http://localhost:5000/upload', {
+            const res = await fetch(`${BASE_URL}/upload`, {
                 method: 'POST',
                 body: formData,
             });
             const data = await res.json();
             console.log(data);
-            setFileLink(data.link)
+            setFileData({
+                fileLink: data.link,
+                fileSize: data.fileSize
+            })
         }
     };
+
+    const handleSendMail = async (e) => {
+        e.preventDefault();
+        console.log(formInputs);
+        setState((prev) => ({ ...prev, open: true, message: 'Email sent!' }));
+        try {
+            const res = await fetch(`${BASE_URL}/sendMail`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    toEmail: formInputs.receiversMail,
+                    fromEmail: formInputs.sendersMail,
+                    fileLink: fileData.fileLink,
+                    fileSize: fileData.fileSize
+                })
+            });
+            const data = res.json();
+            console.log(data);
+        } catch (error) {
+            console.log(`Error sending email : ${error}`);
+        }
+    }
 
     return (
         <>
@@ -83,13 +111,13 @@ const Home = () => {
                     {
                         fileInputRef.current &&
                         <div className='fileUploadedContainer'>
-                            <small>Link expires in 24 hrs</small>
+                            {/* <small>Link expires in 24 hrs</small> */}
                             <div className="fileLinkDiv">
-                                <span className='fileLink'>{fileLink}</span>
+                                <span className='fileLink'>{fileData.fileLink}</span>
                                 <input
                                     ref={linkRef}
                                     type="text"
-                                    value={fileLink}
+                                    value={fileData.link}
                                     readOnly
                                     style={{ display: 'none' }}
                                 />
@@ -97,9 +125,21 @@ const Home = () => {
                             </div>
                             <p>Or send via Email</p>
                             <form>
-                                <input type="email" placeholder="Your email" />
-                                <input type="email" placeholder="Receiver's email" />
-                                <button>Send</button>
+                                <input
+                                    type="email"
+                                    placeholder="Your email"
+                                    name="sendersMail"
+                                    value={formInputs.sendersMail}
+                                    onChange={(e) => setFormInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }))}
+                                />
+                                <input
+                                    type="email"
+                                    placeholder="Receiver's email"
+                                    name="receiversMail"
+                                    value={formInputs.receiversMail}
+                                    onChange={(e) => setFormInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }))}
+                                />
+                                <button onClick={handleSendMail}>Send</button>
                             </form>
                         </div>
                     }
@@ -115,9 +155,9 @@ const Home = () => {
                 <Alert
                     onClose={handleAlertClose}
                     severity="success"
-                    sx={{ bgcolor: '#323232', color: 'white' }}
+                    sx={{ bgcolor: '#323232', color: 'var(--lightColor)' }}
                 >
-                    Link Copied!
+                    {state.message}
                 </Alert>
             </Snackbar>
         </>

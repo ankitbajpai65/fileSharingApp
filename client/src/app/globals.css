@@ -2,6 +2,9 @@
   --lighBlue: #75B5FF;
   --darkBlue: #488BFF;
   --darkGrey:#80808033;
+  --lightColor:white;
+  --darkColor:black;
+  --inputColor:#757575;
 }
 
 * {
