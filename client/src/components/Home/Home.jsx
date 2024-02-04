@@ -7,7 +7,8 @@ import './Home.css';
 const Home = () => {
     const fileInputRef = useRef(null);
     const linkRef = useRef(null);
-    const BASE_URL = process.env.BASE_URL || 'http://localhost:5000';
+    // const BASE_URL = process.env.BASE_URL || 'http://localhost:5000';
+    const BASE_URL = "https://filesharingapp-backend.onrender.com";
     const [uploadedFile, setUploadedFile] = useState({});
     const [formInputs, setFormInputs] = useState({});
     const [fileData, setFileData] = useState({
