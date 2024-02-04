@@ -8,13 +8,12 @@ import './Home.css';
 const BASE_URL = config.env.BASE_URL;
 
 const Home = () => {
-    console.log(BASE_URL);
     const fileInputRef = useRef(null);
     const linkRef = useRef(null);
     const [uploadedFile, setUploadedFile] = useState({});
     const [formInputs, setFormInputs] = useState({});
     const [fileData, setFileData] = useState({
-        fileLink: '',
+        fileLink: 'Generating link...',
         fileSize: ''
     });
     const [state, setState] = useState({
@@ -60,7 +59,7 @@ const Home = () => {
                 body: formData,
             });
             const data = await res.json();
-            console.log(data);
+            // console.log(data);
             setFileData({
                 fileLink: data.link,
                 fileSize: data.fileSize
@@ -120,7 +119,7 @@ const Home = () => {
                                 <input
                                     ref={linkRef}
                                     type="text"
-                                    value={fileData.link}
+                                    value={fileData.fileLink}
                                     readOnly
                                     style={{ display: 'none' }}
                                 />

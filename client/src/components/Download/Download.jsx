@@ -1,4 +1,5 @@
 "use client"
+import { useState } from 'react';
 import { usePathname } from 'next/navigation';
 import config from '../../../next.config';
 import '../Home/Home.css';
@@ -8,9 +9,11 @@ const BASE_URL = config.env.BASE_URL;
 
 const Download = () => {
     const pathname = usePathname();
+    const [isDownloadBtnClicked, setIsDownloadBtnClicked] = useState(false);
     const file = pathname.split('/')[2];
 
     const handleDownloadBtn = async () => {
+        setIsDownloadBtnClicked(true);
         try {
             const response = await fetch(`${BASE_URL}/download/${file}`);
             console.log(response);
@@ -29,6 +32,8 @@ const Download = () => {
             } else {
                 console.error(`Failed to download file. Status: ${response.status}`);
             }
+            setTimeout(()=>setIsDownloadBtnClicked(false),3000);
+            
         } catch (err) {
             console.error(err);
         }
@@ -45,9 +50,10 @@ const Download = () => {
                 <p className='fileName'>{file}</p>
                 <button
                     className='downloadBtn'
+                    disabled={isDownloadBtnClicked ? true : false}
                     onClick={() => handleDownloadBtn()}
                 >
-                    Download File
+                    {isDownloadBtnClicked ? "Downloading..." : "Download File"}
                 </button>
             </div>
         </section>
