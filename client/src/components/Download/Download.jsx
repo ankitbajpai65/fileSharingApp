@@ -5,8 +5,9 @@ import './Download.css';
 
 const Download = () => {
     const pathname = usePathname();
-    // const BASE_URL = process.env.BASE_URL || 'http://localhost:5000';
-    const BASE_URL = "https://filesharingapp-backend.onrender.com";
+    // const BASE_URL = 'http://localhost:5000';
+    // const BASE_URL = "https://filesharingapp-backend.onrender.com";
+    const BASE_URL = "https://file-sharing-app-backend-beryl.vercel.app";
     const file = pathname.split('/')[2];
 
     const handleDownloadBtn = async () => {
