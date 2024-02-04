@@ -2,14 +2,15 @@
 import { useState, useRef } from 'react';
 import { Snackbar, Alert } from '@mui/material';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import config from '../../../next.config'; 
 import './Home.css';
 
+const BASE_URL = config.env.BASE_URL;
+
 const Home = () => {
+    console.log(BASE_URL);
     const fileInputRef = useRef(null);
     const linkRef = useRef(null);
-    // const BASE_URL = 'http://localhost:5000';
-    // const BASE_URL = "https://filesharingapp-backend.onrender.com";
-    const BASE_URL = "https://file-sharing-app-backend-beryl.vercel.app";
     const [uploadedFile, setUploadedFile] = useState({});
     const [formInputs, setFormInputs] = useState({});
     const [fileData, setFileData] = useState({

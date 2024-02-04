@@ -17,7 +17,7 @@ router.post('/', (req, res) => {
             <p>Hi there,</p>
             <p>Please visit the below attached link to download the file -</p>
             <p><a href="${req.body.fileLink}">Download file</a></p>
-            <p>File size - ${req.body.fileSize}</p>
+            <p>File size - ${req.body.fileSize} bytes</p>
             <p>Thank you for using fileSharingApp!</p>
         `        
         });
