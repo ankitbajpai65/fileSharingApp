@@ -19,7 +19,7 @@ const Download = () => {
             console.log(response);
 
             if (response.ok) {
-                const filename = 'downloaded_file';
+                const filename = 'filegem';
                 const blob = await response.blob();
                 const url = URL.createObjectURL(blob);
 
@@ -32,8 +32,8 @@ const Download = () => {
             } else {
                 console.error(`Failed to download file. Status: ${response.status}`);
             }
-            setTimeout(()=>setIsDownloadBtnClicked(false),3000);
-            
+            setTimeout(() => setIsDownloadBtnClicked(false), 3000);
+
         } catch (err) {
             console.error(err);
         }

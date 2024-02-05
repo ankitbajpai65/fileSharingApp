@@ -2,7 +2,10 @@
 import { useState, useRef } from 'react';
 import { Snackbar, Alert } from '@mui/material';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
-import config from '../../../next.config'; 
+import config from '../../../next.config';
+import { useFormik } from 'formik';
+import EmailSchema from './validationSchema';
+import { Typography } from '@mui/material';
 import './Home.css';
 
 const BASE_URL = config.env.BASE_URL;
@@ -11,7 +14,8 @@ const Home = () => {
     const fileInputRef = useRef(null);
     const linkRef = useRef(null);
     const [uploadedFile, setUploadedFile] = useState({});
-    const [formInputs, setFormInputs] = useState({});
+    // const [formInputs, setFormInputs] = useState({});
+    const [errorMsg, setErrorMsg] = useState("");
     const [fileData, setFileData] = useState({
         fileLink: 'Generating link...',
         fileSize: ''
@@ -67,9 +71,7 @@ const Home = () => {
         }
     };
 
-    const handleSendMail = async (e) => {
-        e.preventDefault();
-        console.log(formInputs);
+    const handleSendMail = async (values) => {
         setState((prev) => ({ ...prev, open: true, message: 'Email sent!' }));
         try {
             const res = await fetch(`${BASE_URL}/sendMail`, {
@@ -78,8 +80,8 @@ const Home = () => {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    toEmail: formInputs.receiversMail,
-                    fromEmail: formInputs.sendersMail,
+                    toEmail: values.receiversMail,
+                    fromEmail: values.sendersMail,
                     fileLink: fileData.fileLink,
                     fileSize: fileData.fileSize
                 })
@@ -90,6 +92,15 @@ const Home = () => {
             console.log(`Error sending email : ${error}`);
         }
     }
+
+    const formik = useFormik({
+        initialValues: {
+            sendersMail: '',
+            receiversMail: '',
+        },
+        validationSchema: EmailSchema,
+        onSubmit: handleSendMail
+    });
 
     return (
         <>
@@ -123,25 +134,53 @@ const Home = () => {
                                     readOnly
                                     style={{ display: 'none' }}
                                 />
-                                <ContentCopyIcon className='copyIcon' onClick={handleCopyClick} />
+                                <ContentCopyIcon className='copyIcon' onClick={handleCopyClick} disabled={fileData.fileLink === 'Generating link...' && true} />
                             </div>
                             <p>Or send via Email</p>
-                            <form>
+                            <form type="button">
                                 <input
                                     type="email"
                                     placeholder="Your email"
                                     name="sendersMail"
-                                    value={formInputs.sendersMail}
-                                    onChange={(e) => setFormInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }))}
+                                    // value={formInputs.sendersMail}
+                                    // onChange={(e) => setFormInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }))}
+                                    value={formik.values["sendersMail"]}
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    error={formik.touched["sendersMail"] && Boolean(formik.errors["sendersMail"])}
+                                    helperText={formik.touched["sendersMail"] && formik.errors["sendersMail"]}
                                 />
+                                {formik.touched.sendersMail && formik.errors.sendersMail && (
+                                    <Typography variant="subtitle2" color="error" sx={{
+                                        marginTop: '-9px',
+                                        paddingLeft: '14px',
+                                        textAlign: 'start',
+                                    }}>
+                                        {formik.errors.sendersMail}
+                                    </Typography>
+                                )}
                                 <input
                                     type="email"
                                     placeholder="Receiver's email"
                                     name="receiversMail"
-                                    value={formInputs.receiversMail}
-                                    onChange={(e) => setFormInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }))}
+                                    // value={formInputs.receiversMail}
+                                    // onChange={(e) => setFormInputs((prev) => ({ ...prev, [e.target.name]: e.target.value }))}
+                                    value={formik.values["receiversMail"]}
+                                    onChange={formik.handleChange}
+                                    onBlur={formik.handleBlur}
+                                    error={formik.touched["receiversMail"] && Boolean(formik.errors["receiversMail"])}
+                                    helperText={formik.touched["receiversMail"] && formik.errors["receiversMail"]}
                                 />
-                                <button onClick={handleSendMail}>Send</button>
+                                {formik.touched.receiversMail && formik.errors.receiversMail && (
+                                    <Typography variant="subtitle2" color="error" sx={{
+                                        marginTop: '-9px',
+                                        paddingLeft: '14px',
+                                        textAlign: 'start',
+                                    }}>
+                                        {formik.errors.receiversMail}
+                                    </Typography>
+                                )}
+                                <button type="button" onClick={formik.handleSubmit}>Send</button>
                             </form>
                         </div>
                     }
