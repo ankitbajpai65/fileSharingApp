@@ -10,9 +10,8 @@ export default function Home() {
 
   return (
     <>
-      <Navbar />
       {
-        pathname === `/download/72474248` ? <Download /> : <HomePage />
+        pathname === `/download` ? <Download /> : <HomePage />
       }
     </>
   );

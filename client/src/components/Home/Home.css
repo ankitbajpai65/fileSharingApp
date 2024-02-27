@@ -1,13 +1,47 @@
-.homeContainer {
-    /* border: 2px solid red; */
+.homeSection {
     height: calc(100vh - 64px);
     display: flex;
     align-items: center;
+}
+
+.homeDefaultContainer {
+    justify-content: space-evenly;
+}
+
+.welcomeContainer {
+    display: flex;
+}
+
+.authImgContainer {
+    display: flex;
+    align-items: center;
     justify-content: center;
+    width: 30%;
+}
+
+.notLoggedinContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    align-items: center;
+    margin-bottom: 3rem;
+    font-weight: bold;
+}
+
+.notLoggedinContainer .homeDefaultText {
+    font-weight: bold;
+}
+
+.notLoggedinContainer button {
+    margin-top: 1rem;
+}
+
+.homeContainer {
+    justify-content: center;
+    gap: 3rem;
 }
 
 .homeBox {
-    /* border: 2px solid red; */
     background-color: var(--darkGrey);
     min-height: 45%;
     height: auto;
@@ -45,7 +79,6 @@
 /* File Upload Container */
 
 .fileUploadedContainer {
-    /* border: 1px solid white; */
     display: flex;
     flex-direction: column;
     gap: 1.2rem;

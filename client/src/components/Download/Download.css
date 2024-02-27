@@ -1,3 +1,10 @@
+.downloadSection{
+    height:calc(100lvh - 64px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .downloadBox {
     text-align: center;
 }
@@ -14,3 +21,4 @@
     font-size: 1rem;
     font-weight: 600;
 }
+

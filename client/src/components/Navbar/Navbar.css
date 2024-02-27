@@ -3,11 +3,48 @@
     height: 64px;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     padding: 0 8rem;
 }
 
 .navbar img {
     height: 4rem;
+    cursor: pointer;
+}
+
+.loginBtn {
+    background: var(--darkBlue);
+    color: var(--lightColor);
+    font-size: 14px;
+    padding: 8px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    border: none;
+}
+
+.loginBtn:hover {
+    background-color: transparent;
+    color: var(--darkBlue);
+    box-shadow: 1px 1px 10px #75B5FF, 0px 0px 1px #75B5FF;
+}
+
+/* USER DROPDOWN */
+
+.dropdownMenu .username {
+    font-weight: 600;
+    cursor: auto;
+}
+
+.dropdownMenu .userEmail {
+    margin-top: -4px;
+    cursor: auto;
+}
+
+.dropdownMenu .logoutBtn p {
+    color:var(--darkBlue);
+    margin-top: 1rem;
+    font-weight: 600;
 }
 
 @media only screen and (max-width:900px) {

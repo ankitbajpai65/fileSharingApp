@@ -16,7 +16,6 @@ const Download = () => {
         setIsDownloadBtnClicked(true);
         try {
             const response = await fetch(`${BASE_URL}/download/${file}`);
-            console.log(response);
 
             if (response.ok) {
                 const filename = 'filegem';
@@ -40,7 +39,7 @@ const Download = () => {
     };
 
     return (
-        <section className="homeContainer">
+        <section className="downloadSection">
             <div className="homeBox downloadBox">
                 <div className='imgContainer'>
                     <img src="/icon.png" alt="" />

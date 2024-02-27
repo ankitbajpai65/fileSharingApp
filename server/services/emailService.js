@@ -13,7 +13,7 @@ const createTransporter = async () => {
     );
 
     oauth2Client.setCredentials({
-        refresh_token: process.env.REFRESH_TOKEN
+        refresh_token: process.env.REFRESH_TOKEN,
     });
 
     const accessToken = await new Promise((resolve, reject) => {
@@ -26,7 +26,8 @@ const createTransporter = async () => {
     });
 
     const transporter = nodemailer.createTransport({
-        service: "gmail",
+        service: "gmail.com",
+        secure: true,
         auth: {
             type: "OAuth2",
             user: process.env.EMAIL,
