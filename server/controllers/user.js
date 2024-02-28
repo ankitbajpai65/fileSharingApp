@@ -34,13 +34,17 @@ const handleUserLogin = async (req, res) => {
 
     try {
         const user = await User.findOne({ email });
-        // console.log(user);
+        console.log(user);
 
         if (user && (await bcrypt.compare(password, user.password))) {
+            console.log('user exits and pasword matched')
+
             const token = jwt.sign({ email }, process.env.TOKEN_KEY,
                 { expiresIn: "5h" }
             );
             user.token = token;
+
+            console.log(`token generated`)
 
             res.cookie('filegem_token', token, {
                 // domain: process.env.BASE_URL,
@@ -103,10 +107,12 @@ const handleUserDetails = async (req, res) => {
 const handleUserLogout = (req, res) => {
     try {
         res.clearCookie("filegem_token", {
-            domain: process.env.BASE_URL,
-            expire: Date.now() + 2592000000,
-            secure: true,
+            // domain: process.env.BASE_URL,
+            path: "/",
+            sameSite: "strict",
             httpOnly: true,
+            secure: true,
+            expire: Date.now() + 2592000000,
         });
         return res.json({ status: 'ok', message: "Logged out successfully" });
     } catch (error) {
