@@ -45,10 +45,10 @@ const handleUserLogin = async (req, res) => {
             );
             user.token = token;
 
-            console.log(`token generated`)
+            console.log(`token generated`,token)
 
             res.cookie('filegem_token', token, {
-                // domain: process.env.BASE_URL,
+                domain: process.env.BASE_URL,
                 path: "/",
                 sameSite: "strict",
                 httpOnly: true,
@@ -108,7 +108,7 @@ const handleUserDetails = async (req, res) => {
 const handleUserLogout = (req, res) => {
     try {
         res.clearCookie("filegem_token", {
-            // domain: process.env.BASE_URL,
+            domain: process.env.BASE_URL,
             path: "/",
             sameSite: "strict",
             httpOnly: true,
