@@ -31,10 +31,11 @@ const handleUserSignup = async (req, res) => {
 
 const handleUserLogin = async (req, res) => {
     const { email, password } = req.body;
+    console.log(email.password);
 
     try {
         const user = await User.findOne({ email });
-        console.log(user);
+        console.log('user', user);
 
         if (user && (await bcrypt.compare(password, user.password))) {
             console.log('user exits and pasword matched')
