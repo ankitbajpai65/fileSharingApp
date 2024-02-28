@@ -44,9 +44,11 @@ const handleUserLogin = async (req, res) => {
 
             res.cookie('filegem_token', token, {
                 // domain: process.env.BASE_URL,
-                expire: Date.now() + 2592000000,
-                // secure: true,
+                path: "/",
+                sameSite: "strict",
                 httpOnly: true,
+                secure: true,
+                expire: Date.now() + 2592000000,
             })
 
             return res.status(200).json({
