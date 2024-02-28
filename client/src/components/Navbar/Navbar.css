@@ -42,7 +42,7 @@
 }
 
 .dropdownMenu .logoutBtn p {
-    color:var(--darkBlue);
+    color: var(--darkBlue);
     margin-top: 1rem;
     font-weight: 600;
 }

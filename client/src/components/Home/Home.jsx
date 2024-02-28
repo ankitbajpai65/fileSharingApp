@@ -1,6 +1,6 @@
 "use client";
 import { useState, useRef, useContext } from 'react';
-import { Typography, Snackbar, Alert } from '@mui/material';
+import { Typography, Snackbar, Alert, Backdrop, CircularProgress } from '@mui/material';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { useFormik } from 'formik';
 import EmailSchema from './validationSchema';
@@ -28,7 +28,7 @@ const Home = () => {
         horizontal: 'center',
     });
     const { vertical, horizontal, open } = state;
-    const { isUserLoggedin, userData } = useContext(AppContext);
+    const { isUserLoggedin, userData, isLoading } = useContext(AppContext);
 
     const handleAlertClose = () => {
         setState({
@@ -59,7 +59,7 @@ const Home = () => {
 
             const formData = new FormData();
             formData.append('file', selectedFile);
-            formData.append('user', userData.id); 
+            formData.append('user', userData.id);
 
             const res = await fetch(`${BASE_URL}/upload`, {
                 method: 'POST',
@@ -104,12 +104,19 @@ const Home = () => {
         onSubmit: handleSendMail
     });
 
-
-
     return (
         <>
             {
-                !isUserLoggedin ?
+                (isLoading && !isUserLoggedin) &&
+                <Backdrop
+                    sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                    open={isLoading}
+                >
+                    <CircularProgress color="inherit" />
+                </Backdrop>
+            }
+            {
+                (!isUserLoggedin && !isLoading) ?
                     <section className="homeSection homeDefaultContainer">
                         <div className="authImgContainer">
                             <Image

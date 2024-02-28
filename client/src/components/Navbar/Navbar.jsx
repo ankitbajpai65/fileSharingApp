@@ -10,10 +10,9 @@ const BASE_URL = process.env.BASE_URL;
 
 const Navbar = () => {
     const router = useRouter();
-    const [loading, setLoading] = useState(false);
     const [anchorElUser, setAnchorElUser] = useState(null);
 
-    const { isUserLoggedin, setIsUserLoggedin, userData, setUserData } = useContext(AppContext);
+    const { isUserLoggedin, setIsUserLoggedin, userData, setUserData, setIsLoading } = useContext(AppContext);
 
     const handleOpenUserMenu = (event) => {
         setAnchorElUser(event.currentTarget);
@@ -24,22 +23,27 @@ const Navbar = () => {
     };
 
     const handleUserData = async () => {
-        const res = await fetch(`${BASE_URL}/user/userData`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                Accept: 'application/json',
-            },
-            // withCredentials: true,
-            credentials: "include",
-        })
+        setIsLoading(true);
+        try {
+            const res = await fetch(`${BASE_URL}/user/userData`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Accept: 'application/json',
+                },
+                credentials: "include",
+            });
 
-        const response = await res.json();
+            const response = await res.json();
 
-        if (response.status === 'ok') {
-            setUserData(response.data);
-            setIsUserLoggedin(true);
-            setLoading(false);
+            if (response.status === 'ok') {
+                setUserData(response.data);
+                setIsUserLoggedin(true);
+            }
+        } catch (error) {
+            console.error("Error fetching user data:", error);
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -54,7 +58,6 @@ const Navbar = () => {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
             },
-            // withCredentials: true,
             credentials: "include",
         })
 
@@ -70,10 +73,10 @@ const Navbar = () => {
         <nav className='navbar'>
             <img src="/logo.png" alt="" onClick={() => router.push('/')} />
             {
-                isUserLoggedin ?
+                (isUserLoggedin || setIsLoading) ?
                     <>
                         <AccountCircleIcon
-                            sx={{ fontSize: 40 }}
+                            sx={{ fontSize: 40, cursor: "pointer" }}
                             onClick={handleOpenUserMenu}
                         />
                         <Menu
@@ -94,10 +97,10 @@ const Navbar = () => {
                             onClose={handleCloseUserMenu}
                         >
                             <MenuItem>
-                                <Typography className="username">{userData.name}</Typography>
+                                <Typography className="username">{userData?.name}</Typography>
                             </MenuItem>
                             <MenuItem>
-                                <Typography variant="caption" className="userEmail">{userData.email}</Typography>
+                                <Typography variant="caption" className="userEmail">{userData?.email}</Typography>
                             </MenuItem>
                             <MenuItem onClick={handleLogout} className="logoutBtn">
                                 <Typography>Logout</Typography>

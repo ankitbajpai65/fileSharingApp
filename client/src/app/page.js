@@ -1,5 +1,4 @@
 "use client"
-import Navbar from '@/components/Navbar/Navbar';
 import HomePage from '@/components/Home/Home';
 import Download from '@/components/Download/Download';
 import { usePathname } from 'next/navigation'
