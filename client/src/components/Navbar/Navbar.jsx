@@ -73,7 +73,7 @@ const Navbar = () => {
         <nav className='navbar'>
             <img src="/logo.png" alt="" onClick={() => router.push('/')} />
             {
-                (isUserLoggedin || setIsLoading) ?
+                (isUserLoggedin || isLoading) ?
                     <>
                         <AccountCircleIcon
                             sx={{ fontSize: 40, cursor: "pointer" }}
