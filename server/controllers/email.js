@@ -9,7 +9,7 @@ const router = Router();
 router.post('/', (req, res) => {
     try {
         sendEmail({
-            subject: "Filegem shared a file link",
+            subject: `${req.body.user} shared a file link with you`,
             text: "Please find the button to download te file below",
             to: req.body.toEmail,
             from: req.body.fromEmail,

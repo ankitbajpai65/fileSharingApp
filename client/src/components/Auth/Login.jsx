@@ -22,7 +22,6 @@ const Login = () => {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
             },
-            // withCredentials: true,
             credentials: "include",
             body: JSON.stringify(values),
         });

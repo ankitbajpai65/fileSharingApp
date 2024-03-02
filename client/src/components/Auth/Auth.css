@@ -20,6 +20,9 @@
     color: var(--darkBlue);
     font-weight: 600;
 }
+.formMainContainer .formContainer .Mui-focussed {
+    border:1px solid pink;
+}
 
 .formContainer .inputField input {
     background: var(--darkColor);

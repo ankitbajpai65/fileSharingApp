@@ -1,13 +1,11 @@
 "use client";
 import { useState, useRef, useContext } from 'react';
-import { Typography, Snackbar, Alert, Backdrop, CircularProgress } from '@mui/material';
+import Loader from './Loader';
+import { Typography, Snackbar, Alert, Button } from '@mui/material';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
 import { useFormik } from 'formik';
 import EmailSchema from './validationSchema';
-import { useRouter } from 'next/navigation';
-import Image from 'next/image';
 import { AppContext } from '@/app/context/AppContext';
-import authImg from "../../../public/authImg3.png";
 import './Home.css';
 
 const BASE_URL = process.env.BASE_URL;
@@ -15,7 +13,6 @@ const BASE_URL = process.env.BASE_URL;
 const Home = () => {
     const fileInputRef = useRef(null);
     const linkRef = useRef(null);
-    const router = useRouter();
     const [uploadedFile, setUploadedFile] = useState(null);
 
     const [fileData, setFileData] = useState({
@@ -28,7 +25,7 @@ const Home = () => {
         horizontal: 'center',
     });
     const { vertical, horizontal, open } = state;
-    const { isUserLoggedin, userData, isLoading } = useContext(AppContext);
+    const { userData, isLoading } = useContext(AppContext);
 
     const handleAlertClose = () => {
         setState({
@@ -85,7 +82,8 @@ const Home = () => {
                     toEmail: values.receiversMail,
                     fromEmail: values.sendersMail,
                     fileLink: fileData.fileLink,
-                    fileSize: fileData.fileSize
+                    fileSize: fileData.fileSize,
+                    user:userData.name
                 })
             });
             const data = res.json();
@@ -107,34 +105,7 @@ const Home = () => {
     return (
         <>
             {
-                (isLoading && !isUserLoggedin) &&
-                <Backdrop
-                    sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                    open={isLoading}
-                >
-                    <CircularProgress color="inherit" />
-                </Backdrop>
-            }
-            {
-                (!isUserLoggedin && !isLoading) ?
-                    <section className="homeSection homeDefaultContainer">
-                        <div className="authImgContainer">
-                            <Image
-                                src={authImg}
-                                alt="image"
-                                style={{ height: '100%', width: '100%' }}
-                            />
-                        </div>
-                        <div className="notLoggedinContainer">
-                            <Typography variant="h4" className="homeDefaultText">Welcome to the Filegem!</Typography>
-                            <Typography variant="h6" className="homeDefaultText">You need to be logged in to upload files.</Typography>
-                            <button
-                                className="loginBtn"
-                                onClick={() => router.push('/login')}
-                            >Login
-                            </button>
-                        </div>
-                    </section>
+                (isLoading) ? <Loader isLoading={isLoading} />
                     :
                     <section className="homeSection homeContainer">
                         <div className="homeBox">
@@ -169,7 +140,7 @@ const Home = () => {
                                         <ContentCopyIcon className='copyIcon' onClick={handleCopyClick} disabled={fileData.fileLink === 'Generating link...' && true} />
                                     </div>
                                     <p>Or send via Email</p>
-                                    <form type="button">
+                                    <form>
                                         <input
                                             type="email"
                                             placeholder="Your email"
@@ -208,7 +179,14 @@ const Home = () => {
                                                 {formik.errors.receiversMail}
                                             </Typography>
                                         )}
-                                        <button type="button" onClick={formik.handleSubmit}>Send</button>
+                                        <Button
+                                            variant="contained"
+                                            sx={{ borderRadius: '2rem', height: '2.2rem', mt: 2 }}
+                                            type="button"
+                                            onClick={formik.handleSubmit}
+                                        >
+                                            Send
+                                        </Button>
                                     </form>
                                 </div>
                             }

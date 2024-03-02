@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/navigation";
-import { Menu, MenuItem, Typography } from '@mui/material';
+import { Menu, MenuItem, Typography, Button } from '@mui/material';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { AppContext } from "@/app/context/AppContext";
 import './Navbar.css';
@@ -73,7 +73,7 @@ const Navbar = () => {
         <nav className='navbar'>
             <img src="/logo.png" alt="" onClick={() => router.push('/')} />
             {
-                (isUserLoggedin || isLoading) ?
+                (isUserLoggedin) ?
                     <>
                         <AccountCircleIcon
                             sx={{ fontSize: 40, cursor: "pointer" }}
@@ -108,11 +108,12 @@ const Navbar = () => {
                         </Menu>
                     </>
                     :
-                    <button
-                        className="loginBtn"
+                    <Button
+                        variant="contained"
                         onClick={() => router.push('/login')}
-                    >Login
-                    </button>
+                    >
+                        Login
+                    </Button>
             }
         </nav>
     );

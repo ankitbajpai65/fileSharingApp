@@ -1,6 +1,7 @@
 "use client"
 import { useState } from 'react';
 import { usePathname } from 'next/navigation';
+import Button from "@mui/material/Button";
 import config from '../../../next.config';
 import '../Home/Home.css';
 import './Download.css';
@@ -47,13 +48,14 @@ const Download = () => {
                 <h2>Your file is ready to download</h2>
                 {/* <small>Link will expire in 24 hrs</small> */}
                 <p className='fileName'>{file}</p>
-                <button
-                    className='downloadBtn'
-                    disabled={isDownloadBtnClicked ? true : false}
+
+                <Button
+                    variant="contained"
                     onClick={() => handleDownloadBtn()}
+                    className="downloadBtn"
                 >
                     {isDownloadBtnClicked ? "Downloading..." : "Download File"}
-                </button>
+                </Button>
             </div>
         </section>
     )

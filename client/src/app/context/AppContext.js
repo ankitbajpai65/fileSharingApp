@@ -6,7 +6,7 @@ export const AppContext = createContext({})
 export default function AppContextProvider({ children }) {
     const [isUserLoggedin, setIsUserLoggedin] = useState(false);
     const [userData, setUserData] = useState(null);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
 
     const values = { isUserLoggedin, setIsUserLoggedin, userData, setUserData, isLoading, setIsLoading }
 

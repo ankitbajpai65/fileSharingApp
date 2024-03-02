@@ -1,14 +1,15 @@
-"use client"
+"use client";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
-const theme = createTheme({
-    // palette: {
-    //     primary: {
-    //         main: '#292524',
-    //         light: '#fafaf9',
-    //         dark: '#57534e',
-    //     },
-    // },
+let theme = createTheme({
+    palette: {
+        primary: {
+            main: '#488BFF',
+        },
+    },
+});
+
+theme = createTheme(theme, {
     components: {
         MuiPaper: {
             styleOverrides: {
@@ -21,7 +22,6 @@ const theme = createTheme({
         MuiList: {
             styleOverrides: {
                 root: {
-                    // textAlign:'center',
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center'
@@ -34,6 +34,30 @@ const theme = createTheme({
                     color: 'white'
                 }
             },
+        },
+        MuiButton: {
+            styleOverrides: {
+                root: {
+                    textTransform: 'capitalize',
+                },
+            },
+            variants: [
+                {
+                    props: {
+                        variant: 'contained',
+                    },
+                    style: {
+                        backgroundColor: theme.palette.primary.main,
+                        fontWeight: 600,
+                        transition: '.3s ease-in',
+                        '&:hover': {
+                            backgroundColor: 'transparent',
+                            color: theme.palette.primary.main,
+                            boxShadow: '1px 1px 10px #75B5FF, 0px 0px 1px #75B5FF'
+                        },
+                    },
+                },
+            ]
         },
     },
 });
