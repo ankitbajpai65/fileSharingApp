@@ -80,7 +80,7 @@ const Navbar = () => {
                             onClick={handleOpenUserMenu}
                         />
                         <Menu
-                            sx={{ mt: '45px', ml: '45px' }}
+                            sx={{ mt: '45px', ml: { lg: '45px' } }}
                             id="menu-appbar"
                             anchorEl={anchorElUser}
                             className="dropdownMenu"

@@ -10,6 +10,14 @@ let theme = createTheme({
 });
 
 theme = createTheme(theme, {
+    typography: {
+        h4: {
+            fontSize: '1.9rem',
+            [theme.breakpoints.only("sm")]: {
+                fontSize: '1.8rem',
+            },
+        },
+    },
     components: {
         MuiPaper: {
             styleOverrides: {

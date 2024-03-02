@@ -60,8 +60,15 @@ const Signup = () => {
     return (
         <>
             <Grid container className="formMainContainer">
-                <Grid item xs={11} sm={7} md={5} lg={4} className="formContainer">
-                    <Typography variant="h4" sx={{ py: 3 }} className="formHead">Create your account</Typography>
+                <Grid item lg={4} className="formContainer">
+                    <Typography
+                        variant="h4"
+                        sx={{ typography: { sm: 'h4', xs: 'h5' }, py: 3 }}
+                        className="formHead"
+                    >
+                        Create your account
+                    </Typography>
+                    
                     {['name', 'email', 'password'].map((field) => (
                         <TextField
                             key={field}

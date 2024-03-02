@@ -10,6 +10,7 @@ const NoLoginPage = () => {
 
     return (
         <section className="homeSection homeDefaultContainer">
+            <div className="overlay"></div>
             <div className="authImgContainer">
                 <Image
                     src={authImg}

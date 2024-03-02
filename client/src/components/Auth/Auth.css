@@ -8,6 +8,7 @@
 
 .formMainContainer .formContainer {
     background: var(--darkGrey);
+    min-width: 25rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -20,8 +21,9 @@
     color: var(--darkBlue);
     font-weight: 600;
 }
+
 .formMainContainer .formContainer .Mui-focussed {
-    border:1px solid pink;
+    border: 1px solid pink;
 }
 
 .formContainer .inputField input {
@@ -37,4 +39,15 @@
 .formContainer .authBtn {
     width: 100%;
     margin-top: 1.5rem;
+}
+
+@media only screen and (max-width:450px) {
+    .formMainContainer {
+        padding: 0 14px;
+    }
+
+    .formMainContainer .formContainer {
+        min-width: 100%;
+        padding:2rem 1rem;
+    }
 }
