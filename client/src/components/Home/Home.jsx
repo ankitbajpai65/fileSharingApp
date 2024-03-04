@@ -1,8 +1,9 @@
 "use client";
 import { useState, useRef, useContext } from 'react';
 import Loader from './Loader';
-import { Typography, Snackbar, Alert, Button } from '@mui/material';
+import { Typography, Snackbar, Alert, Button, IconButton, Box } from '@mui/material';
 import ContentCopyIcon from '@mui/icons-material/ContentCopy';
+import ShareIcon from '@mui/icons-material/Share';
 import { useFormik } from 'formik';
 import EmailSchema from './validationSchema';
 import { AppContext } from '@/app/context/AppContext';
@@ -38,16 +39,6 @@ const Home = () => {
         fileInputRef.current.click();
     };
 
-    const handleCopyClick = () => {
-        linkRef.current.select();
-
-        try {
-            navigator.clipboard.writeText(fileData.fileLink);
-            setState((prev) => ({ ...prev, open: true, message: 'Link copied!' }));
-        } catch (err) {
-            console.error('Unable to copy link to clipboard');
-        }
-    };
 
     const handleFileChange = async (event) => {
         const selectedFile = event.target.files[0];
@@ -70,6 +61,30 @@ const Home = () => {
         }
     };
 
+    const handleCopyClick = () => {
+        linkRef.current.select();
+
+        try {
+            navigator.clipboard.writeText(fileData.fileLink);
+            setState((prev) => ({ ...prev, open: true, message: 'Link copied!' }));
+        } catch (err) {
+            console.error('Unable to copy link to clipboard');
+        }
+    };
+
+    const handleSharing = async () => {
+        try {
+            await navigator.share({
+                title: "Filegem",
+                text: "Download url of a file",
+                url: fileData.fileLink,
+            });
+            console.log("Data was shared successfully");
+        } catch (err) {
+            console.error("error:", err.message);
+        }
+    }
+
     const handleSendMail = async (values) => {
         setState((prev) => ({ ...prev, open: true, message: 'Email sent!' }));
         try {
@@ -83,7 +98,7 @@ const Home = () => {
                     fromEmail: values.sendersMail,
                     fileLink: fileData.fileLink,
                     fileSize: fileData.fileSize,
-                    user:userData.name
+                    user: userData.name
                 })
             });
             const data = res.json();
@@ -137,7 +152,24 @@ const Home = () => {
                                             readOnly
                                             style={{ display: 'none' }}
                                         />
-                                        <ContentCopyIcon className='copyIcon' onClick={handleCopyClick} disabled={fileData.fileLink === 'Generating link...' && true} />
+                                        <Box sx={{ display: 'flex' }}>
+                                            <IconButton
+                                                aria-label="delete"
+                                                onClick={handleCopyClick}
+                                                disabled={fileData.fileLink === 'Generating link...' && true}
+                                                className="copyBtn"
+                                            >
+                                                <ContentCopyIcon sx={{ color: 'white' }} />
+                                            </IconButton>
+                                            <IconButton
+                                                aria-label="delete"
+                                                onClick={handleSharing}
+                                                disabled={fileData.fileLink === 'Generating link...' && true}
+                                                className="shareBtn"
+                                            >
+                                                <ShareIcon sx={{ color: 'white' }} />
+                                            </IconButton>
+                                        </Box>
                                     </div>
                                     <p>Or send via Email</p>
                                     <form>

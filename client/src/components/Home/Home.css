@@ -117,13 +117,9 @@
     white-space: nowrap;
 }
 
-.copyIcon {
-    cursor: pointer;
-}
-
-.copyIcon path {
-    color: var(--lightColor);
-    cursor: pointer;
+.fileLinkDiv .copyBtn:hover,
+.fileLinkDiv .shareBtn:hover {
+    background: #344354bd;
 }
 
 /* FORM */
