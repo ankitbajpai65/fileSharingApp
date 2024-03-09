@@ -1,12 +1,9 @@
-const { Router } = require('express');
 const sendEmail = require('../services/emailService');
 const dotenv = require('dotenv');
 
 dotenv.config();
 
-const router = Router();
-
-router.post('/', (req, res) => {
+const handleSendEmail = (req, res) => {
     try {
         sendEmail({
             subject: `${req.body.user} shared a file link with you`,
@@ -24,6 +21,6 @@ router.post('/', (req, res) => {
     } catch (error) {
         console.log(error)
     }
-});
+};
 
-module.exports = router;
+module.exports = handleSendEmail;

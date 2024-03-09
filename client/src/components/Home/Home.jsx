@@ -52,6 +52,7 @@ const Home = () => {
             const res = await fetch(`${BASE_URL}/upload`, {
                 method: 'POST',
                 body: formData,
+                credentials: "include",
             });
             const data = await res.json();
             setFileData({
@@ -93,6 +94,7 @@ const Home = () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
+                credentials: "include",
                 body: JSON.stringify({
                     toEmail: values.receiversMail,
                     fromEmail: values.sendersMail,

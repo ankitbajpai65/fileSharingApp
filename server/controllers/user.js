@@ -67,20 +67,9 @@ const handleUserLogin = async (req, res) => {
 }
 
 const handleUserDetails = async (req, res) => {
-    const token = req.cookies.filegem_token;
+    const user = req.user;
 
     try {
-        if (!token) {
-            return res.status(403).json({
-                status: 'error',
-                message: "A token is required for authentication"
-            });
-        }
-
-        const decoded = jwt.verify(token, process.env.TOKEN_KEY);
-
-        const user = await User.findOne({ email: decoded.email });
-
         return res.status(200).json({
             status: 'ok',
             message: 'User details returned successsfully',
