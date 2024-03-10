@@ -1,7 +1,8 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/navigation";
 import { Grid, Typography, TextField, Button, Snackbar, Alert } from "@mui/material";
+import { AppContext } from "@/app/context/AppContext";
 import { useFormik } from 'formik';
 import { SignupSchema } from './authSchema';
 import './Auth.css';
@@ -11,6 +12,8 @@ const BASE_URL = process.env.BASE_URL;
 const Signup = () => {
     const router = useRouter();
     const [errorMsg, setErrorMsg] = useState("");
+
+    const { isUserLoggedin } = useContext(AppContext);
 
     const [state, setState] = useState({
         open: false,
@@ -57,6 +60,12 @@ const Signup = () => {
         onSubmit: handleSignupSubmit
     });
 
+    useEffect(() => {
+        if (isUserLoggedin) {
+            router.push('/');
+        }
+    }, [isUserLoggedin]);
+
     return (
         <>
             <Grid container className="formMainContainer">
@@ -68,7 +77,7 @@ const Signup = () => {
                     >
                         Create your account
                     </Typography>
-                    
+
                     {['name', 'email', 'password'].map((field) => (
                         <TextField
                             key={field}

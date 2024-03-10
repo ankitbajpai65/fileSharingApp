@@ -1,5 +1,5 @@
 "use client"
-import { useState, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/navigation";
 import { useFormik } from 'formik';
 import { AppContext } from "@/app/context/AppContext";
@@ -13,7 +13,7 @@ const Login = () => {
     const router = useRouter();
     const [errorMsg, setErrorMsg] = useState("");
 
-    const { setIsUserLoggedin, setUserData } = useContext(AppContext);
+    const { isUserLoggedin, setIsUserLoggedin, setUserData } = useContext(AppContext);
 
     const handleLoginSubmit = async (values) => {
         const res = await fetch(`${BASE_URL}/user/login`, {
@@ -47,6 +47,12 @@ const Login = () => {
         validationSchema: LoginSchema,
         onSubmit: handleLoginSubmit
     });
+
+    useEffect(() => {
+        if (isUserLoggedin) {
+            router.push('/');
+        }
+    }, [isUserLoggedin]);
 
     return (
         <Grid container className="formMainContainer">

@@ -1,8 +1,20 @@
 const FileModel = require('../models/file');
 
+const SIZE_UNITS = ['bytes', 'KB', 'MB', 'GB', 'TB'];
+
 const handleFileUpload = async (req, res) => {
     const fileId = req.file.filename;
     const token = req.cookies.filegem_token;
+
+    let fileSize = req.file.size;
+    let count = 0;
+
+    while (fileSize >= 1024 && count < SIZE_UNITS.length - 1) {
+        fileSize /= 1024;
+        count++;
+    }
+
+    const formattedFileSize = `${fileSize.toFixed(2)} ${SIZE_UNITS[count]}`;
 
     try {
         if (!token) {
@@ -10,7 +22,7 @@ const handleFileUpload = async (req, res) => {
         }
         await FileModel.create({
             fileName: req.file.filename,
-            fileSize: req.file.size,
+            fileSize: formattedFileSize,
             fileType: req.file.mimetype,
             user: req.body.user
         });

@@ -6,7 +6,10 @@ const containerStyle = {
   flexDirection: 'column',
   justifyContent: "center",
   alignItems: 'center',
-  gap: '1.5rem'
+  gap: '1.5rem',
+  textAlign: "center",
+  padding: '1rem',
+  paddingBottom: '8rem'
 };
 
 const homeBtnStyle = {

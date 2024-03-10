@@ -39,26 +39,29 @@ const Home = () => {
         fileInputRef.current.click();
     };
 
-
     const handleFileChange = async (event) => {
         const selectedFile = event.target.files[0];
-        if (selectedFile) {
-            setUploadedFile(selectedFile);
+        try {
+            if (selectedFile) {
+                setUploadedFile(selectedFile);
 
-            const formData = new FormData();
-            formData.append('file', selectedFile);
-            formData.append('user', userData.id);
+                const formData = new FormData();
+                formData.append('file', selectedFile);
+                formData.append('user', userData.id);
 
-            const res = await fetch(`${BASE_URL}/upload`, {
-                method: 'POST',
-                body: formData,
-                credentials: "include",
-            });
-            const data = await res.json();
-            setFileData({
-                fileLink: data.link,
-                fileSize: data.fileSize
-            })
+                const res = await fetch(`${BASE_URL}/upload`, {
+                    method: 'POST',
+                    body: formData,
+                    credentials: "include",
+                });
+                const data = await res.json();
+                setFileData({
+                    fileLink: data.link,
+                    fileSize: data.fileSize
+                })
+            }
+        } catch (error) {
+            console.log(error)
         }
     };
 
