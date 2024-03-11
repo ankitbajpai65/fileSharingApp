@@ -22,8 +22,8 @@
     font-weight: 600;
 }
 
-.formMainContainer .formContainer .Mui-focussed {
-    border: 1px solid pink;
+.formContainer .inputField div {
+    background: var(--darkColor);
 }
 
 .formContainer .inputField input {
@@ -32,8 +32,9 @@
     padding: 12px 14px;
 }
 
-.formContainer .inputField input:hover {
-    border: 1px solid #4c4c4c;
+.formContainer .inputField .visibilityIcon {
+    color: var(--lightColor);
+    cursor: pointer;
 }
 
 .formContainer .authBtn {
@@ -48,6 +49,6 @@
 
     .formMainContainer .formContainer {
         min-width: 100%;
-        padding:2rem 1rem;
+        padding: 2rem 1rem;
     }
 }

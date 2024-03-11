@@ -1,7 +1,8 @@
 "use client";
 import { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/navigation";
-import { Grid, Typography, TextField, Button, Snackbar, Alert } from "@mui/material";
+import { Grid, Typography, TextField, Button, Snackbar, Alert, InputAdornment } from "@mui/material";
+import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { AppContext } from "@/app/context/AppContext";
 import { useFormik } from 'formik';
 import { SignupSchema } from './authSchema';
@@ -12,6 +13,7 @@ const BASE_URL = process.env.BASE_URL;
 const Signup = () => {
     const router = useRouter();
     const [errorMsg, setErrorMsg] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
 
     const { isUserLoggedin } = useContext(AppContext);
 
@@ -21,6 +23,10 @@ const Signup = () => {
         horizontal: 'center',
     });
     const { vertical, horizontal, open } = state;
+
+    const handleTogglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
 
     const handleAlertClose = () => {
         setState({
@@ -86,11 +92,31 @@ const Signup = () => {
                             id="fullWidth"
                             className="inputField"
                             name={field}
+                            type={field === 'password' ? (showPassword ? 'text' : 'password') : 'text'}
                             value={formik.values[field]}
                             onChange={formik.handleChange}
                             onBlur={formik.handleBlur}
                             error={formik.touched[field] && Boolean(formik.errors[field])}
                             helperText={formik.touched[field] && formik.errors[field]}
+                            InputProps={field === 'password' && {
+                                endAdornment: (
+                                    <InputAdornment position="end" sx={{ background: 'red' }}>
+                                        {showPassword ? (
+                                            <Visibility
+                                                onClick={handleTogglePasswordVisibility}
+                                                fontSize="small"
+                                                className="visibilityIcon"
+                                            />
+                                        ) : (
+                                            <VisibilityOff
+                                                onClick={handleTogglePasswordVisibility}
+                                                fontSize="small"
+                                                className="visibilityIcon"
+                                            />
+                                        )}
+                                    </InputAdornment>
+                                ),
+                            }}
                         />
                     ))}
                     {errorMsg && (
