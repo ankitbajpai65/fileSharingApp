@@ -24,6 +24,7 @@ const Home = () => {
         open: false,
         vertical: 'top',
         horizontal: 'center',
+        type: ''
     });
     const { vertical, horizontal, open } = state;
     const { userData, isLoading } = useContext(AppContext);
@@ -32,6 +33,7 @@ const Home = () => {
         setState({
             ...state,
             open: false,
+            type: ''
         });
     };
 
@@ -55,10 +57,20 @@ const Home = () => {
                     credentials: "include",
                 });
                 const data = await res.json();
-                setFileData({
-                    fileLink: data.link,
-                    fileSize: data.fileSize
-                })
+                console.log(data)
+
+                if (data.error === 'File size limit exceeded (max: 20MB)') {
+                    setState((prev) => (
+                        { ...prev, open: true, message: 'File is too large (max:20MB)', type: 'error' }
+                    ));
+                    setUploadedFile(null);
+                }
+                else {
+                    setFileData({
+                        fileLink: data.link,
+                        fileSize: data.fileSize
+                    })
+                }
             }
         } catch (error) {
             console.log(error)
@@ -70,7 +82,7 @@ const Home = () => {
 
         try {
             navigator.clipboard.writeText(fileData.fileLink);
-            setState((prev) => ({ ...prev, open: true, message: 'Link copied!' }));
+            setState((prev) => ({ ...prev, open: true, message: 'Link copied!', type: 'success' }));
         } catch (err) {
             console.error('Unable to copy link to clipboard');
         }
@@ -90,7 +102,7 @@ const Home = () => {
     }
 
     const handleSendMail = async (values) => {
-        setState((prev) => ({ ...prev, open: true, message: 'Email sent!' }));
+        setState((prev) => ({ ...prev, open: true, message: 'Email sent!', type: "success" }));
         try {
             const res = await fetch(`${BASE_URL}/sendMail`, {
                 method: 'POST',
@@ -147,7 +159,7 @@ const Home = () => {
                             {
                                 uploadedFile &&
                                 <div className='fileUploadedContainer'>
-                                    {/* <small>Link expires in 24 hrs</small> */}
+                                    <small>Link expires in 24 hrs</small>
                                     <div className="fileLinkDiv">
                                         <span className='fileLink'>{fileData.fileLink}</span>
                                         <input
@@ -239,7 +251,7 @@ const Home = () => {
                 onClose={handleAlertClose}>
                 <Alert
                     onClose={handleAlertClose}
-                    severity="success"
+                    severity={state.type === 'success' ? "success" : "error"}
                     sx={{ bgcolor: '#323232', color: 'var(--lightColor)' }}
                 >
                     {state.message}

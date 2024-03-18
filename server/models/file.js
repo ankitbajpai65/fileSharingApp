@@ -5,6 +5,10 @@ const fileSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    googleDriveId: {
+        type: String,
+        required: true
+    },
     fileSize: {
         type: String,
         required: true
