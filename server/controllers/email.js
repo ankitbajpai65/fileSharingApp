@@ -26,7 +26,7 @@ const handleSendEmail = (req, res) => {
             <p>Hi there,</p>
             <p>Please visit the below attached link to download the file -</p>
             <p><a href="${req.body.fileLink}">Download file</a></p>
-            <p>File size - ${formattedFileSize}</p>
+            <p>File size - ${formattedFileSize} | Link will expire in 24 hours</p>
             <p>Thank you for using filegem.</p>
         `
         });
