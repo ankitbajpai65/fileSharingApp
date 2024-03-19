@@ -5,6 +5,7 @@ import Download from '@/components/Download/Download';
 import { usePathname } from 'next/navigation';
 import { AppContext } from '@/app/context/AppContext';
 import NoLoginPage from '@/components/Home/NoLoginPage';
+import Loader from '@/components/Home/Loader';
 
 export default function Home() {
   const pathname = usePathname();
@@ -14,9 +15,10 @@ export default function Home() {
     <>
       {
         pathname === `/download` ? <Download /> :
-          (
-            isUserLoggedin ? <HomePage /> : <NoLoginPage />
-          )
+          isLoading ? <Loader isLoading={isLoading} /> :
+            (
+              isUserLoggedin ? <HomePage /> : <NoLoginPage />
+            )
       }
     </>
   );

@@ -17,14 +17,11 @@ async function authorize() {
     return jwtClient;
 }
 
-
 const handleFileDownload = async (req, res) => {
     const fileName = req.params.id;
     console.log(fileName)
 
     const file = await FileModel.findOne({ fileName })
-
-    console.log(file)
 
     if (!file) {
         return res.status(404).json({
@@ -34,7 +31,6 @@ const handleFileDownload = async (req, res) => {
     }
 
     const authClient = await authorize();
-
     const drive = google.drive({ version: 'v3', auth: authClient });
 
     const dest = fs.createWriteStream(path.join(__dirname, "..", "downloads", fileName));

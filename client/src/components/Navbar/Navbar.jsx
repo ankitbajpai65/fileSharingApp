@@ -22,6 +22,12 @@ const Navbar = () => {
         setAnchorElUser(null);
     };
 
+    if (window !== 'undefined') {
+        window.addEventListener("scroll", () => {
+            handleCloseUserMenu();
+        })
+    }
+
     const handleUserData = async () => {
         setIsLoading(true);
         try {
@@ -80,7 +86,7 @@ const Navbar = () => {
                             onClick={handleOpenUserMenu}
                         />
                         <Menu
-                            sx={{ mt: '45px', ml: { lg: '45px' } }}
+                            sx={{ mt: '45px', ml: { lg: '45px' }, zIndex: 100 }}
                             id="menu-appbar"
                             anchorEl={anchorElUser}
                             className="dropdownMenu"

@@ -56,7 +56,6 @@ async function googleDriveUpload(authClient, filePath, fileType) {
             },
             fields: 'id',
         });
-        console.log("File uploaded to Google Drive. FileId:", file.data.id);
         return file.data.id;
     } catch (error) {
         console.log("Error uploading file to Google Drive:", error);
@@ -75,7 +74,7 @@ async function upload(req, res, next) {
                 return res.status(500).json({ error: "Error uploading file." });
             }
 
-            console.log(req.file);
+            // console.log(req.file);
             const authClient = await authorize();
 
             const filePath = req.file.path;
@@ -106,9 +105,7 @@ async function deleteFileFromDrive(authClient, googleDriveId) {
     try {
         const drive = google.drive({ version: 'v3', auth: authClient });
 
-        await drive.files.delete({
-            fileId: googleDriveId
-        });
+        await drive.files.delete({ fileId: googleDriveId });
     } catch (error) {
         console.log("Error deleting file from google drive:", error);
     }
@@ -123,7 +120,7 @@ function scheduleFileDeletion(googleDriveId) {
         } catch (error) {
             console.error("Error scheduling file deletion:", error);
         }
-    }, 2 * 60 * 1000);
+    }, 24 * 60 * 60 * 1000);
 }
 
 module.exports = { multerUpload, upload };

@@ -2,16 +2,6 @@ const FileModel = require('../models/file');
 
 const SIZE_UNITS = ['bytes', 'KB', 'MB', 'GB', 'TB'];
 
-async function deleteFileFromDatabase(googleDriveId) {
-    try {
-        await FileModel.deleteOne({ googleDriveId: googleDriveId });
-        console.log("File details deleted from database:");
-    } catch (error) {
-        console.log("Error deleting file details from database:", error);
-        throw error;
-    }
-}
-
 const handleFileUpload = async (req, res) => {
     const fileId = req.file.filename;
     const token = req.cookies.filegem_token;
@@ -53,6 +43,16 @@ const handleFileUpload = async (req, res) => {
     }
 }
 
+async function deleteFileFromDatabase(googleDriveId) {
+    try {
+        await FileModel.deleteOne({ googleDriveId: googleDriveId });
+        console.log("File details deleted from database:");
+    } catch (error) {
+        console.log("Error deleting file details from database:", error);
+        throw error;
+    }
+}
+
 function scheduleFileDeletion(googleDriveId) {
     setTimeout(async () => {
         try {
@@ -60,7 +60,7 @@ function scheduleFileDeletion(googleDriveId) {
         } catch (error) {
             console.error("Error scheduling file deletion:", error);
         }
-    }, 2 * 60 * 1000);
+    }, 24 * 60 * 60 * 1000);
 }
 
 module.exports = { handleFileUpload };

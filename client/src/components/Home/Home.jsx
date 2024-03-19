@@ -43,6 +43,7 @@ const Home = () => {
 
     const handleFileChange = async (event) => {
         const selectedFile = event.target.files[0];
+
         try {
             if (selectedFile) {
                 setUploadedFile(selectedFile);
@@ -95,7 +96,6 @@ const Home = () => {
                 text: "Download url of a file",
                 url: fileData.fileLink,
             });
-            console.log("Data was shared successfully");
         } catch (err) {
             console.error("error:", err.message);
         }
