@@ -22,7 +22,7 @@ const Navbar = () => {
         setAnchorElUser(null);
     };
 
-    if (window !== 'undefined') {
+    if (typeof window !== "undefined") {
         window.addEventListener("scroll", () => {
             handleCloseUserMenu();
         })
