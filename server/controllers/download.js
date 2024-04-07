@@ -19,14 +19,13 @@ async function authorize() {
 
 const handleFileDownload = async (req, res) => {
     const fileName = req.params.id;
-    console.log(fileName)
 
     const file = await FileModel.findOne({ fileName })
 
     if (!file) {
         return res.status(404).json({
             status: 'error',
-            message: 'Link has been expired',
+            message: 'The link has expired or is incorrect!',
         })
     }
 

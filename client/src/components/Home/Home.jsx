@@ -41,42 +41,69 @@ const Home = () => {
         fileInputRef.current.click();
     };
 
+    const handleDragOver = (event) => {
+        event.preventDefault();
+    };
+
+    const handleDrop = async (event) => {
+        event.preventDefault();
+
+        const files = event.dataTransfer.files;
+
+        if (files) {
+            setUploadedFile(files[0]);
+            const formData = new FormData();
+            formData.append('file', files[0]);
+            formData.append('user', userData.id);
+
+            handleFileUpload(formData);
+        }
+    };
+
     const handleFileChange = async (event) => {
         const selectedFile = event.target.files[0];
 
+        if (selectedFile) {
+            setUploadedFile(selectedFile);
+
+            const formData = new FormData();
+            formData.append('file', selectedFile);
+            formData.append('user', userData.id);
+
+            handleFileUpload(formData);
+        };
+    }
+
+    async function handleFileUpload(formData) {
+        setFileData({
+            fileLink: 'Generating link...',
+            fileSize: ''
+        })
         try {
-            if (selectedFile) {
-                setUploadedFile(selectedFile);
+            const res = await fetch(`${BASE_URL}/upload`, {
+                method: 'POST',
+                body: formData,
+                credentials: "include",
+            });
+            const data = await res.json();
+            console.log(data)
 
-                const formData = new FormData();
-                formData.append('file', selectedFile);
-                formData.append('user', userData.id);
-
-                const res = await fetch(`${BASE_URL}/upload`, {
-                    method: 'POST',
-                    body: formData,
-                    credentials: "include",
-                });
-                const data = await res.json();
-                console.log(data)
-
-                if (data.error === 'File size limit exceeded (max: 20MB)') {
-                    setState((prev) => (
-                        { ...prev, open: true, message: 'File is too large (max:20MB)', type: 'error' }
-                    ));
-                    setUploadedFile(null);
-                }
-                else {
-                    setFileData({
-                        fileLink: data.link,
-                        fileSize: data.fileSize
-                    })
-                }
+            if (data.error === 'File size limit exceeded (max: 20MB)') {
+                setState((prev) => (
+                    { ...prev, open: true, message: 'File is too large (max:20MB)', type: 'error' }
+                ));
+                setUploadedFile(null);
+            }
+            else {
+                setFileData({
+                    fileLink: data.link,
+                    fileSize: data.fileSize
+                })
             }
         } catch (error) {
             console.log(error)
         }
-    };
+    }
 
     const handleCopyClick = () => {
         linkRef.current.select();
@@ -140,9 +167,9 @@ const Home = () => {
                 (isLoading) ? <Loader isLoading={isLoading} />
                     :
                     <section className="homeSection homeContainer">
-                        <div className="homeBox">
-                            <div className='imgContainer'>
-                                <img src="/icon.png" alt="" />
+                        <div className="homeBox dropZone" id="drop-zone" onDrop={handleDrop} onDragOver={handleDragOver}>
+                            <div className='imgContainer' >
+                                <img src="/icon.png" alt="" onClick={handleBrowseClick} />
                             </div>
                             <div>
                                 <span>Drop your file here, or</span>

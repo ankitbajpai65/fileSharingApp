@@ -23,8 +23,6 @@ const Login = () => {
         setShowPassword(!showPassword);
     };
 
-    console.log(showLoader)
-
     const handleLoginSubmit = async (values) => {
         try {
             setShowLoader(true);

@@ -11,13 +11,12 @@ const handleUserSignup = async (req, res) => {
         }
 
         const oldUser = await User.findOne({ email });
-
         if (oldUser) {
             return res.status(409).json({ status: "error", message: "User Already Exist. Please Login" });
         }
 
         const encryptedUserPassword = await bcrypt.hash(password, 10);
-
+        
         await User.create({
             name,
             email: email.toLowerCase(),
@@ -68,7 +67,6 @@ const handleUserLogin = async (req, res) => {
 
 const handleUserDetails = async (req, res) => {
     const user = req.user;
-
     try {
         return res.status(200).json({
             status: 'ok',
@@ -80,11 +78,8 @@ const handleUserDetails = async (req, res) => {
             },
         })
     } catch (error) {
-        res.status(404).json({
-            status: 'error',
-            message: error,
-        })
         console.log(error);
+        return res.status(404).json({ status: 'error', message: error })
     }
 }
 

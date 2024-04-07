@@ -15,7 +15,7 @@ export default function Home() {
     <>
       {
         pathname === `/download` ? <Download /> :
-          isLoading ? <Loader isLoading={isLoading} /> :
+          /* isLoading ? <Loader isLoading={isLoading} /> : */
             (
               isUserLoggedin ? <HomePage /> : <NoLoginPage />
             )

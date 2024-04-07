@@ -31,10 +31,6 @@ const Download = () => {
         try {
             const response = await fetch(`${BASE_URL}/download/${file}`);
 
-            if (response.status === "error") {
-                const res = await response.json();
-                console.log(res);
-            }
             if (response.ok) {
                 const filename = 'filegem';
                 const blob = await response.blob();
@@ -91,7 +87,7 @@ const Download = () => {
                     severity="error"
                     sx={{ bgcolor: '#323232', color: 'var(--lightColor)' }}
                 >
-                    Link has been expired!
+                    The link has been expired or is incorrect!
                 </Alert>
             </Snackbar>
         </>

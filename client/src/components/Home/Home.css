@@ -81,6 +81,7 @@
 
 .imgContainer img {
     height: 100%;
+    cursor:pointer;
 }
 
 .browseBtn {
