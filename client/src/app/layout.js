@@ -1,15 +1,17 @@
-import './globals.css'
-import { Inter } from 'next/font/google';
-import ThemeContext from './context/ThemeProvider';
-import AppContextProvider from './context/AppContext';
-import Navbar from '@/components/Navbar/Navbar'
+import "./globals.css";
+import { Inter } from "next/font/google";
+import ThemeContext from "./context/ThemeProvider";
+import AppContextProvider from "./context/AppContext";
+import Navbar from "@/components/Navbar/Navbar";
+import { AppContext } from "@/app/context/AppContext";
+import { useContext } from "react";
 
-const inter = Inter({ subsets: ['latin'] })
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: 'Filegem',
-  description: 'An easy file sharing application.',
-}
+  title: "Filegem",
+  description: "An easy file sharing application.",
+};
 
 export default function RootLayout({ children }) {
   return (
@@ -23,5 +25,5 @@ export default function RootLayout({ children }) {
         </ThemeContext>
       </body>
     </html>
-  )
+  );
 }

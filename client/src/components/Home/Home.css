@@ -1,173 +1,194 @@
 .homeSection {
-    min-height: calc(100lvh - 64px);
-    display: flex;
-    align-items: center;
+  min-height: calc(100lvh - 64px);
+  display: flex;
+  align-items: center;
 }
 
 .homeDefaultContainer {
-    justify-content: space-evenly;
+  justify-content: space-evenly;
 }
 
 .welcomeContainer {
-    display: flex;
+  display: flex;
 }
 
 .authImgContainer {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    /* width: 30%; */
-    width: 25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* width: 30%; */
+  width: 25rem;
 }
 
 .notLoggedinContainer {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    align-items: center;
-    margin-bottom: 3rem;
-    font-weight: bold;
-    z-index: 100;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  align-items: center;
+  margin-bottom: 3rem;
+  font-weight: bold;
+  z-index: 100;
 }
 
 .notLoggedinContainer .homeDefaultText {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .notLoggedinContainer button {
-    margin-top: 1rem;
+  margin-top: 1rem;
 }
 
 .overlay {
-    display: none;
-    position: absolute;
-    top: 60;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    color: white;
-    padding: 20px;
-    box-sizing: border-box;
-    z-index: 1;
+  display: none;
+  position: absolute;
+  top: 60;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: 20px;
+  box-sizing: border-box;
+  z-index: 1;
 }
 
 .homeContainer {
-    justify-content: center;
-    gap: 3rem;
+  justify-content: center;
+  gap: 3rem;
 }
 
+
 .homeBox {
-    background-color: var(--darkGrey);
-    min-height: 45%;
-    height: auto;
-    width: 30%;
-    min-width: 27rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    padding: 2rem;
-    margin: 2rem 0;
-    z-index: 1;
+  background-color: var(--darkGrey);
+  min-height: 45%;
+  height: auto;
+  width: 30%;
+  min-width: 27rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  /* padding: 2rem; */
+  padding: 2rem 0;
+  margin: 2rem 0;
+  z-index: 1;
+  position: relative;
+}
+
+.uploadBox{
+  padding-bottom: 0;
+  text-align: center;
 }
 
 .homeBox div {
-    text-align: center;
+  text-align: center;
 }
 
 .imgContainer {
-    height: 10rem;
+  height: 10rem;
 }
 
 .imgContainer img {
-    height: 100%;
-    cursor:pointer;
+  height: 100%;
+  cursor: pointer;
 }
 
 .browseBtn {
-    color: var(--darkBlue);
-    font-size: 1rem;
-    font-weight: bold;
-    margin-left: 10px;
-    background: transparent;
-    border: none;
-    cursor: pointer;
+  color: var(--darkBlue);
+  font-size: 1rem;
+  font-weight: bold;
+  margin-left: 10px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.uploadedChunk {
+  text-align: center;
+  color: var(--darkBlue);
+}
+
+.uploadLoader {
+  position: sticky;
+  bottom: 0px;
+  height: 6px;
+  background: var(--darkBlue);
+  border-radius: 2px;
 }
 
 /* File Upload Container */
 
 .fileUploadedContainer {
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
 }
 
 .fileLinkDiv {
-    border: 1px dashed var(--lightColor);
-    padding: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1.5rem;
-    border-radius: 6px;
+  border: 1px dashed var(--lightColor);
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  border-radius: 6px;
 }
 
 .fileLink {
-    color: var(--darkBlue);
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
+  color: var(--darkBlue);
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .fileLinkDiv .copyBtn:hover,
 .fileLinkDiv .shareBtn:hover {
-    background: #344354bd;
+  background: #344354bd;
 }
 
 /* FORM */
 
 form {
-    border: 1px dashed var(--lightColor);
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    padding: 1.5rem;
-    border-radius: 8px;
+  border: 1px dashed var(--lightColor);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.5rem;
+  border-radius: 8px;
 }
 
 input {
-    padding: 10px 14px;
-    font-size: 14px;
-    color: var(--inputColor);
-    border: none;
-    outline: none;
-    border-radius: 4px;
-    background: var(--darkColor);
+  padding: 10px 14px;
+  font-size: 14px;
+  color: var(--inputColor);
+  border: none;
+  outline: none;
+  border-radius: 4px;
+  background: var(--darkColor);
 }
 
-@media only screen and (max-width:900px) {
-    .homeDefaultContainer {
-        background: url('/authImg3.png') center center/contain no-repeat;
-        background-size: 25rem;
-    }
+@media only screen and (max-width: 900px) {
+  .homeDefaultContainer {
+    background: url("/authImg3.png") center center/contain no-repeat;
+    background-size: 25rem;
+  }
 
-    .authImgContainer {
-        display: none;
-    }
+  .authImgContainer {
+    display: none;
+  }
 
-    .overlay {
-        display: block;
-    }
+  .overlay {
+    display: block;
+  }
 
-    .notLoggedinContainer {
-        width: 90%;
-        text-align: center;
-    }
+  .notLoggedinContainer {
+    width: 90%;
+    text-align: center;
+  }
 }
 
-@media only screen and (max-width:450px) {
-    .homeBox {
-        min-width: 95%;
-        padding: 1rem;
-    }
+@media only screen and (max-width: 450px) {
+  .homeBox {
+    min-width: 95%;
+    padding: 1rem;
+  }
 }

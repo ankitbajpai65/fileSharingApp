@@ -40,6 +40,7 @@
 .formContainer .authBtn {
     width: 100%;
     margin-top: 1.5rem;
+    font-size: 1rem;
 }
 
 @media only screen and (max-width:450px) {
