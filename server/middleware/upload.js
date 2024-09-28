@@ -70,7 +70,7 @@ async function upload(req, res, next) {
         console.error("Multer error:", err);
         return res
           .status(400)
-          .json({ error: "File size limit exceeded (max: 20MB)" });
+          .json({ error: "File size limit exceeded (max: 30MB)" });
       } else if (err) {
         console.error("Unknown error:", err);
         return res.status(500).json({ error: "Error uploading file." });
