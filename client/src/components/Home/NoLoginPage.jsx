@@ -23,7 +23,7 @@ const NoLoginPage = () => {
           Welcome to the Filegem!
         </Typography>
         <Typography variant="h6" className="homeDefaultText">
-          You need to be logged in to upload files.
+          You need to be logged in to share files.
         </Typography>
         <Button variant="contained" onClick={() => router.push("/login")}>
           Login

@@ -147,7 +147,7 @@ const Home = () => {
       const data = await res.data;
       console.log(data);
 
-      if (data.error === "File size limit exceeded (max: 20MB)") {
+      if (data.error === "File size limit exceeded (max: 30MB)") {
         setState((prev) => ({
           ...prev,
           open: true,
@@ -164,6 +164,16 @@ const Home = () => {
         setShowLink(true);
       }
     } catch (error) {
+      if (error.response.data.error === "File size limit exceeded (max: 30MB)") {
+        setState((prev) => ({
+          ...prev,
+          open: true,
+          message: "File is too large (max:30MB)",
+          type: "error",
+        }));
+        setUploadedFile(null);
+      }
+
       console.log(error);
     }
   }

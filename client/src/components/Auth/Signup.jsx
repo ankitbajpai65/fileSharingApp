@@ -66,7 +66,7 @@ const Signup = () => {
       }
       setState((prev) => ({ ...prev, open: true }));
       resetForm();
-    } catch (error) {q  
+    } catch (error) {
       console.log("Some error ocurred", error);
     } finally {
       setShowLoader(false);
