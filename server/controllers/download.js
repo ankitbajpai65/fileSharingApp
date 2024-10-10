@@ -2,6 +2,7 @@ const path = require("path");
 const fs = require("fs");
 const { google } = require("googleapis");
 const FileModel = require("../models/file.js");
+const User = require("../models/user");
 const credentials = require("../credentials.json");
 
 const SCOPES = [
@@ -23,6 +24,7 @@ async function authorize() {
 const handleFileDownload = async (req, res) => {
   const fileName = req.params.id;
 
+  // checking in db
   const file = await FileModel.findOne({ fileName });
 
   if (!file) {
@@ -32,6 +34,7 @@ const handleFileDownload = async (req, res) => {
     });
   }
 
+  // operations in google drive
   const authClient = await authorize();
   const drive = google.drive({ version: "v3", auth: authClient });
 
@@ -68,4 +71,30 @@ const handleFileDownload = async (req, res) => {
   );
 };
 
-module.exports = { handleFileDownload };
+const getFileUrl = async (req, res) => {
+  const fileName = req.params.fileName;
+
+  const file = await FileModel.findOne({ fileName: fileName });
+
+  if (!file) {
+    return res.status(404).json({
+      status: "error",
+      message: "File not found",
+    });
+  }
+
+  const fileUrl = `https://drive.google.com/file/d/${file.googleDriveId}/preview`;
+
+  if (fileUrl)
+    return res.status(200).json({
+      status: "ok",
+      fileUrl: fileUrl,
+    });
+  else
+    return res.status(400).json({
+      status: "error",
+      message: "Some error ocurred",
+    });
+};
+
+module.exports = { handleFileDownload, getFileUrl };

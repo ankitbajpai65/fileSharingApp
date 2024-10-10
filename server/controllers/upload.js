@@ -18,7 +18,7 @@ const handleFileUpload = async (req, res) => {
 
   try {
     if (!token) {
-      return res.json({ status: "error", msg: "Token is missing" });
+      return res.status(400).json({ status: "error", msg: "Invalid token" });
     }
     await FileModel.create({
       fileName: req.file.filename,
@@ -29,15 +29,16 @@ const handleFileUpload = async (req, res) => {
     });
 
     const shareableLink = `${process.env.BASE_URL}/download/${fileId}`;
-    return res.json({
+    return res.status(200).json({
       link: shareableLink,
+      fileUrl: req.fileUrl,
       googleDriveId: req.fileId,
       fileSize: req.file.size,
       msg: "Link send successfully",
     });
   } catch (err) {
     console.log(err);
-    return res.json({ status: "error", error: err });
+    return res.status(400).json({ status: "error", error: err });
   }
 };
 
