@@ -56,7 +56,21 @@ async function googleDriveUpload(authClient, filePath, fileType) {
       },
       fields: "id",
     });
-    return file.data.id;
+
+    const fileId = file.data.id;
+
+    await drive.permissions.create({
+      fileId: fileId,
+      requestBody: {
+        role: "reader",
+        type: "anyone",
+      },
+    });
+
+    // Generate a public file URL
+    const fileUrl = `https://drive.google.com/file/d/${fileId}/preview`;
+
+    return { fileId, fileUrl };
   } catch (error) {
     console.log("Error uploading file to Google Drive:", error);
     throw error;
@@ -83,7 +97,11 @@ async function upload(req, res, next) {
       const filePath = req.file.path;
       const fileType = req.file.mimetype;
 
-      const fileId = await googleDriveUpload(authClient, filePath, fileType);
+      const { fileId, fileUrl } = await googleDriveUpload(
+        authClient,
+        filePath,
+        fileType
+      );
 
       fs.unlink(filePath, (err) => {
         if (err) {
@@ -94,6 +112,7 @@ async function upload(req, res, next) {
       });
 
       req.fileId = fileId;
+      req.fileUrl = fileUrl;
       next();
     });
   } catch (error) {

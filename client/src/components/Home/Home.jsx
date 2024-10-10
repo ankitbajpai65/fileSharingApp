@@ -1,12 +1,5 @@
 "use client";
-import {
-  useState,
-  useRef,
-  useContext,
-  useLayoutEffect,
-  useEffect,
-} from "react";
-import Loader from "./Loader";
+import { useState, useRef, useContext, useEffect } from "react";
 import {
   Typography,
   Snackbar,
@@ -14,10 +7,10 @@ import {
   Button,
   IconButton,
   Box,
-  // Tooltip,
 } from "@mui/material";
 import ContentCopyIcon from "@mui/icons-material/ContentCopy";
 import ShareIcon from "@mui/icons-material/Share";
+import VisibilityIcon from "@mui/icons-material/Visibility";
 import { useFormik } from "formik";
 import EmailSchema from "./validationSchema";
 import { AppContext } from "@/app/context/AppContext";
@@ -26,6 +19,8 @@ import { styled } from "@mui/material/styles";
 import "./Home.css";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import FileViewer from "../FileViewer";
+import SendIcon from "@mui/icons-material/Send";
 
 const BASE_URL = process.env.BASE_URL;
 
@@ -56,12 +51,13 @@ const Home = () => {
   const fileInputRef = useRef(null);
   const linkRef = useRef(null);
   const router = useRouter();
-  const [uploadedFile, setUploadedFile] = useState(null);
+  // const [uploadedFile, setUploadedFile] = useState(null);
   const [uploadPercentage, setUploadPercentage] = useState(0);
   const [showLink, setShowLink] = useState(false);
 
   const [fileData, setFileData] = useState({
     fileLink: "Generating link...",
+    fileUrl: "",
     fileSize: "",
   });
   const [state, setState] = useState({
@@ -70,6 +66,8 @@ const Home = () => {
     horizontal: "center",
     type: "",
   });
+  const [showFile, setShowFile] = useState(false);
+
   const { vertical, horizontal, open } = state;
   const { isUserLoggedin, userData, isLoading } = useContext(AppContext);
 
@@ -78,6 +76,9 @@ const Home = () => {
       router.push("/");
     }
   }, []);
+
+  const handleOpen = () => setShowFile(true);
+  const handleClose = () => setShowFile(false);
 
   const handleAlertClose = () => {
     setState({
@@ -101,7 +102,7 @@ const Home = () => {
     const files = event.dataTransfer.files;
 
     if (files) {
-      setUploadedFile(files[0]);
+      // setUploadedFile(files[0]);
       const formData = new FormData();
       formData.append("file", files[0]);
       formData.append("user", userData.id);
@@ -114,7 +115,7 @@ const Home = () => {
     const selectedFile = event.target.files[0];
 
     if (selectedFile) {
-      setUploadedFile(selectedFile);
+      // setUploadedFile(selectedFile);
 
       const formData = new FormData();
       formData.append("file", selectedFile);
@@ -128,6 +129,7 @@ const Home = () => {
     setFileData({
       fileLink: "Generating link...",
       fileSize: "",
+      fileUrl: "",
     });
     try {
       setUploadPercentage(0);
@@ -154,10 +156,11 @@ const Home = () => {
           message: "File is too large (max:30MB)",
           type: "error",
         }));
-        setUploadedFile(null);
+        // setUploadedFile(null);
       } else {
         setFileData({
           fileLink: data.link,
+          fileUrl: data.fileUrl,
           fileSize: data.fileSize,
         });
         setUploadPercentage(100);
@@ -284,13 +287,6 @@ const Home = () => {
             </>
           )}
 
-          {/* {uploadPercentage > 0 && (
-                <p className="uploadedChunk">Uploading {uploadPercentage}%</p>
-              )}
-            </div>
-            <div className="uploadLoader"></div> */}
-
-          {/* {uploadedFile && ( */}
           {showLink && (
             <div className="fileUploadedContainer">
               <small>Link expires in 24 hrs</small>
@@ -305,6 +301,16 @@ const Home = () => {
                     style={{ display: "none" }}
                   />
                   <Box sx={{ display: "flex" }}>
+                    <IconButton
+                      aria-label="view"
+                      onClick={handleOpen}
+                      disabled={
+                        fileData.fileLink === "Generating link..." && true
+                      }
+                      className="viewBtn"
+                    >
+                      <VisibilityIcon sx={{ color: "white" }} />
+                    </IconButton>
                     <IconButton
                       aria-label="delete"
                       onClick={handleCopyClick}
@@ -394,6 +400,7 @@ const Home = () => {
                   sx={{ borderRadius: "2rem", height: "2.2rem", mt: 2 }}
                   type="button"
                   onClick={formik.handleSubmit}
+                  endIcon={<SendIcon />}
                 >
                   Send
                 </Button>
@@ -402,6 +409,14 @@ const Home = () => {
           )}
         </div>
       </section>
+
+      {showFile && (
+        <FileViewer
+          open={showFile}
+          handleClose={handleClose}
+          fileUrl={fileData.fileUrl}
+        />
+      )}
 
       <Snackbar
         open={open}

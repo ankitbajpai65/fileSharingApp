@@ -1,23 +1,35 @@
 "use client";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
-import { Button, Snackbar, Alert } from "@mui/material";
+import { Button, Snackbar, Alert, Box } from "@mui/material";
 import config from "../../../next.config";
 import "../Home/Home.css";
 import "./Download.css";
+import FileViewer from "../FileViewer";
+import Loader from "../Home/Loader";
+import PreviewIcon from "@mui/icons-material/Preview";
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
 
 const BASE_URL = config.env.BASE_URL;
 
 const Download = () => {
   const pathname = usePathname();
   const [isDownloadBtnClicked, setIsDownloadBtnClicked] = useState(false);
+  const [showFile, setShowFile] = useState(false);
+  const [fileUrl, setFileUrl] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const file = pathname.split("/")[2];
+
   const [state, setState] = useState({
     open: false,
     vertical: "top",
     horizontal: "center",
   });
   const { vertical, horizontal, open } = state;
+
+  const handleOpen = () => setShowFile(true);
+  const handleClose = () => setShowFile(false);
 
   const handleAlertClose = () => {
     setState({
@@ -53,6 +65,27 @@ const Download = () => {
     }
   };
 
+  const getFileUrl = async () => {
+    if (!fileUrl) {
+      setLoading(true);
+      try {
+        const response = await fetch(`${BASE_URL}/download/files/${file}/url`);
+        const res = await response.json();
+
+        if (res.status === "ok") {
+          setFileUrl(res.fileUrl);
+          handleOpen();
+        }
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
+      }
+    } else handleOpen();
+  };
+
+  if (loading) return <Loader />;
+
   return (
     <>
       <section className="downloadSection">
@@ -64,15 +97,27 @@ const Download = () => {
           <small>Link will expire in 24 hrs</small>
           <p className="fileName">{file}</p>
 
-          <Button
-            variant="contained"
-            onClick={() => handleDownloadBtn()}
-            className="downloadBtn"
-          >
-            {isDownloadBtnClicked ? "Downloading..." : "Download File"}
-          </Button>
+          <Box sx={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+            <Button
+              variant="contained"
+              onClick={getFileUrl}
+              className="downloadBtn"
+              endIcon={<PreviewIcon />}
+            >
+              View File
+            </Button>
+            <Button
+              variant="contained"
+              onClick={() => handleDownloadBtn()}
+              className="downloadBtn"
+              endIcon={<FileDownloadIcon />}
+            >
+              {isDownloadBtnClicked ? "Downloading..." : "Download File"}
+            </Button>
+          </Box>
         </div>
       </section>
+
       <Snackbar
         open={open}
         anchorOrigin={{ vertical, horizontal }}
@@ -88,6 +133,14 @@ const Download = () => {
           The link has been expired or is incorrect!
         </Alert>
       </Snackbar>
+
+      {showFile && (
+        <FileViewer
+          open={showFile}
+          handleClose={handleClose}
+          fileUrl={fileUrl}
+        />
+      )}
     </>
   );
 };

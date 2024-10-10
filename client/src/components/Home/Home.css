@@ -141,6 +141,7 @@
 }
 
 .fileLinkDiv .copyBtn:hover,
+.fileLinkDiv .viewBtn:hover,
 .fileLinkDiv .shareBtn:hover {
   background: #344354bd;
 }
